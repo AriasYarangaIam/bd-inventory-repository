@@ -1,0 +1,16 @@
+# SQL Server backup files
+*.bak
+*.diff
+*.trn
+
+# SQL Server temporary / trace files
+*.mdf
+*.ldf
+*.ndf
+*.sqlplan
+*.xel
+
+# Local environment / output
+*.log
+*.tmp
+.env

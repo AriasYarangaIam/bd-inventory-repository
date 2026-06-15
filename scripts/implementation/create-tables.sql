@@ -59,6 +59,16 @@ CREATE TABLE Logistica.ALMACENES
 );
 GO
 
+CREATE TABLE Logistica.HISTORIAL_PRECIOS(
+    id_historial INT IDENTITY(1, 1) PRIMARY KEY,
+    id_producto INT NOT NULL,
+    precio_anterior DECIMAL(10, 2) NOT NULL,
+    precio_nuevo DECIMAL(10, 2) NOT NULL,
+    fecha_cambio DATETIME NOT NULL DEFAULT GETDATE(),
+    FOREIGN KEY (id_producto) REFERENCES Logistica.PRODUCTOS(id_producto)
+);
+GO
+
 CREATE TABLE Comercial.CLIENTES
 (
     dni CHAR(8) PRIMARY KEY,

@@ -17,21 +17,25 @@ BEGIN
 
         -- Obteniendo el precio unitario del producto
         SELECT @precio_unitario = precio
-        FROM Logistica.PRODUCTOS
-        WHERE id_producto = @codigo_producto;
+    FROM Logistica.PRODUCTOS
+    WHERE id_producto = @codigo_producto;
 
         -- Declarando variable para obtener el código de venta
         DECLARE @codigo_venta INT;
 
-        INSERT INTO Comercial.VENTAS (dni, fecha_evento)
-        VALUES (@dni_cliente, GETDATE());
+        INSERT INTO Comercial.VENTAS
+        (dni, fecha_evento)
+    VALUES
+        (@dni_cliente, GETDATE());
 
         -- Obteniendo el código de venta generado
         SELECT @codigo_venta = SCOPE_IDENTITY();
 
         -- Insertando el detalle de la venta generada anteriormente
-        INSERT INTO Comercial.DETALLE_VENTA (codigo_venta, id_producto, cantidad_vendida, precio_unitario_venta)
-        VALUES (@codigo_venta, @codigo_producto, @cantidad, @precio_unitario);
+        INSERT INTO Comercial.DETALLE_VENTA
+        (codigo_venta, id_producto, cantidad_vendida, precio_unitario_venta)
+    VALUES
+        (@codigo_venta, @codigo_producto, @cantidad, @precio_unitario);
 
         -- Actualizando el stock del producto vendido
         UPDATE Logistica.INVENTARIO
@@ -41,15 +45,18 @@ BEGIN
         COMMIT TRANSACTION;
     END TRY
     BEGIN CATCH
+        IF @@TRANCOUNT > 0
+        BEGIN
         ROLLBACK TRANSACTION;
+        END
         -- Manejo de errores
         DECLARE @ErrorMessage NVARCHAR(2000),
                 @ErrorSeverity INT,
                 @ErrorState INT;
         
         SELECT @ErrorMessage = ERROR_MESSAGE(),
-                @ErrorSeverity = ERROR_SEVERITY(),
-                @ErrorState = ERROR_STATE();
+        @ErrorSeverity = ERROR_SEVERITY(),
+        @ErrorState = ERROR_STATE();
 
         RAISERROR (@ErrorMessage, @ErrorSeverity, @ErrorState);
     END CATCH

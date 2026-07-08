@@ -13,7 +13,7 @@ SELECT
     INNER JOIN Comercial.VENTAS v
     ON c.dni = v.dni;
 
--- Consulta que retorna el dinero totla que ha gastado cada cliente en la tienda
+-- Consulta que retorna el dinero total que ha gastado cada cliente en la tienda
 
 SELECT
     c.dni,
